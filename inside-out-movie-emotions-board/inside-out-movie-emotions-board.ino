@@ -46,20 +46,20 @@ void loop() {
   if(millis() - oldtime > 200){
     oldtime= millis();
 
-    for(int i= 1; i < 10; i++){
-      if(digitalRead(i) && oldstate[i-1]== false){
+    for(int i= 1; i < 10; i++){ // there are 9 buttons, go through all of them
+      if(digitalRead(i) && oldstate[i-1]== false){ //if oldstate (previous) is false (0) and digitalRead (current) is true (1)
         pixels.clear();
-        for(int j=0; j<NUMPIXELS; j++) { // For each pixel...
+        for(int j=0; j<NUMPIXELS; j++) { // For each one of the 12 pixel...
 
-          pixels.setPixelColor(j, colormemory[i-1]);
+          pixels.setPixelColor(j, colormemory[i-1]); // set a color, since button one has color one and etc
           pixels.show();   // Send the updated pixel colors to the hardware.
 
           delay(5); // Pause before next pass through loop
         }
+        oldstate[i-1]= true; // if a color was set the oldstate is now true (1)
+      }else if(digitalRead(i) && oldstate[i-1]== true){ // if oldstate is true (1) does not do anything
         oldstate[i-1]= true;
-      }else if(digitalRead(i) && oldstate[i-1]== true){
-        oldstate[i-1]= true;
-      }else if(!digitalRead(i) && oldstate[i-1]== true){
+      }else if(!digitalRead(i) && oldstate[i-1]== true){ // if digital input went to false (0) and oldstate was true (1) reset oldstate
         oldstate[i-1]= false;
       }
     }
